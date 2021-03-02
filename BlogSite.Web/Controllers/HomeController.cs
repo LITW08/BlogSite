@@ -48,7 +48,12 @@ namespace BlogSite.Web.Controllers
             }
             var db = new BlogDb(_connectionString);
             var vm = new ViewBlogViewModel();
-            vm.Post = db.GetPost(id);
+            var post = db.GetPost(id);
+            if (post == null)
+            {
+                return Redirect("/"); //id not found in db
+            }
+            vm.Post = post;
             vm.Comments = db.GetComments(id);
             if (Request.Cookies["commenter-name"] != null)
             {
